@@ -82,6 +82,10 @@ public:
 		else {
 			cout << "Error: wrong value" << endl;
 		}
+		if (num == 0) {
+			Node* current = new Node(data, this->head, nullptr);
+			head->prev = current;
+		}
 	}
 
 	T get_el(int num) {
