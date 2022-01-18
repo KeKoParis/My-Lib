@@ -13,12 +13,17 @@ int main() {
 	a.add(6);
 	a.add(8);
 	a.print_list();
-	a.insrt_el(13, 3);
-	a.print_list();
-	a.sort();
-	a.print_list();
 	
+	DoublyList<int> b;
+	b.add(74);
+	b.add(-3);
+	b.add(5);
+	b.add(0);
+	b.print_list();
 	
+	DoublyList<int> c;
+	c = list_intersect(a, b);
+	c.print_list();
 	
 	cout << 6 + 6 << endl;
 	return 0;
