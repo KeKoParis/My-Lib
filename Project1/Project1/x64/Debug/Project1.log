@@ -1,3 +1,4 @@
 ﻿  Source.cpp
-D:\lib\Project1\Project1\DoublyList.h(99): warning C4715: DoublyList<int>::get_el: значение возвращается не при всех путях выполнения
+D:\lib\Project1\Project1\DoublyList.h(112): warning C4715: DoublyList<int>::get_el: значение возвращается не при всех путях выполнения
+D:\lib\Project1\Project1\DoublyList.h(112): warning C4715: DoublyList<double>::get_el: значение возвращается не при всех путях выполнения
   Project1.vcxproj -> D:\lib\Project1\x64\Debug\Project1.exe

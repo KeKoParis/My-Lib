@@ -59,32 +59,41 @@ public:
 	}
 
 	void insrt_el(T data, int num) {
-		if (num < sizelist - 1 && num != 0) {
+		if(num > sizelist) {
+			cout << "Error: wrong value" << endl;
+		}
+		if (num < sizelist && num >= 0) {
 			Node* nnode = this->head;
 			Node* pnode;
 			Node* current;
 			int i = 0;
-			while (nnode->next != nullptr) {
+			while (i < sizelist) {
 
 				if (i == num) {
-					current = new Node(data, nnode, nullptr);
-					pnode = nnode->prev;
-					pnode->next = current;
-					current->prev = pnode;
-					nnode->prev = current;
-					break;
+					if (nnode->prev == nullptr) {
+						current = new Node(data, nnode, nullptr);
+						head = current;
+						nnode->prev = current;
+						break;
+					}
+					if (nnode->next == nullptr) {
+						current = new Node(data, nullptr, nnode);
+						nnode->next = current;
+						tail = current;
+						break;
+					}
+					if (nnode->next != nullptr && nnode->prev != nullptr) {
+						pnode = nnode->prev;
+						current = new Node(data, nnode, pnode);
+						nnode->prev = current;
+						pnode->next = current;
+						break;
+					}
 				}
 				nnode = nnode->next;
 				i++;
 			}
 			sizelist++;
-		}
-		else {
-			cout << "Error: wrong value" << endl;
-		}
-		if (num == 0) {
-			Node* current = new Node(data, this->head, nullptr);
-			head->prev = current;
 		}
 	}
 
@@ -186,19 +195,27 @@ public:
 
 	void sort() {
 			Node* current = this->head;
-			Node* nnode = head->next;
+			Node* nnode = current->next;
 			if (typeid(head->data) == typeid(1) || typeid(head->data) ==  typeid(1.0)) {
-				for (int i = 0; i < sizelist; i++) {
-					if (current->data > nnode->data) {
-						T a = nnode->data;
-						nnode->data = current->data;
-						current->data = a;
-						i--;
-					}
-					current = current->next;
-					nnode = current->next;
-					if (nnode == nullptr) {
-						break;
+				int p = 0;
+				while (p != 1) {
+					p = 1;
+					if (nnode != nullptr) {
+						for (int i = 0; i < sizelist; i++) {
+							if (nnode == nullptr) {
+								break;
+							}
+							if (current->data > nnode->data) {
+								T a = current->data;
+								current->data = nnode->data;
+								nnode->data = a;
+								p = 0;
+							}
+							current = current->next;
+							nnode = current->next;
+						}
+						current = this->head;
+						nnode = current->next;
 					}
 				}
 			}
@@ -207,24 +224,27 @@ public:
 			}
 	}
 
-	int find(T a) {
+	T find(T a) {
 		Node* node = this->head;
 		int i = 0;
-		while (node->data != a) {
-			if (node->next == nullptr) {
-				cout << "Element does not exist" << endl;
+		while (i < sizelist) {
+			if (node->data == a) {
+				return i;
 			}
-			node = node->next;
+			else {
+				node = node->next;
+			}
 			i++;
 		}
-		return i;
+		cout << "The element is not in in the list" << endl;
+		return NULL;
 	}
 
 
 };
 
 template<typename T>
-DoublyList<T> list_union(DoublyList<T> a, DoublyList<T> b) {
+DoublyList<T> list_intersect(DoublyList<T> a, DoublyList<T> b) {
 
 	DoublyList<T> un_list;
 
@@ -253,11 +273,11 @@ DoublyList<T> list_union(DoublyList<T> a, DoublyList<T> b) {
 }
 
 template<typename T>
-DoublyList<T> list_intersect(DoublyList<T> a, DoublyList<T> b) {
+DoublyList<T> list_union(DoublyList<T> a, DoublyList<T> b) {
 
 	DoublyList<T> intrsect, c, d;
 
-	c = list_union(a, b);
+	c = list_intersect(a, b);
 
 	for (int i = 0; i < a.size(); i++) {
 		d.add(a.get_el(i));
@@ -277,6 +297,10 @@ DoublyList<T> list_intersect(DoublyList<T> a, DoublyList<T> b) {
 		}
 		u = 0;
 	}
-	
+	for (int i = 0; i < c.size(); i++) {
+		intrsect.add(c.get_el(i));
+	}
+	intrsect.sort();
+
 	return intrsect;
 }
